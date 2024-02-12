@@ -1,6 +1,6 @@
 using System.Drawing;
 
-namespace Robot.Lib;
+namespace Robotc.Lib;
 
 public interface ITableTop
 {

@@ -1,6 +1,6 @@
 using System.Drawing;
 
-namespace Robot.Test;
+namespace Robotc.Test;
 
 public class TableTopTests
 {

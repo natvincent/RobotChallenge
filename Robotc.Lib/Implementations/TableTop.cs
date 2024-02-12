@@ -1,10 +1,13 @@
 ﻿using System.Drawing;
 
-namespace Robot.Lib;
+namespace Robotc.Lib;
 
-public class TableTop : ITableTop
+public class TableTop : Robotc.Lib.ITableTop
 {
-    public Rectangle Bounds { get; set; } = new Rectangle(new Point(0, 0), new Size(3, 3));
+    public Rectangle Bounds { get; set; } = new Rectangle(
+        new Point(0, 0), 
+        new Size(3, 3)
+    );
 
     public Size Size 
     {

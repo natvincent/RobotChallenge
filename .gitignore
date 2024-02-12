@@ -1,1 +1,7 @@
 *.cache
+Robotc.Test/bin/*
+Robotc.Test/obj/*
+Robotc.Lib/bin/*
+Robotc.Lib/obj/*
+Robotc/bin/*
+Robotc/obj/*
