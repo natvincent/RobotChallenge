@@ -6,8 +6,6 @@ namespace Robotc.Test;
 public class CommandTests 
 {
     private readonly Mock<ITableTop> _tableTop = new (MockBehavior.Strict);
-    private readonly Mock<IRobot> _robotMock = new (MockBehavior.Strict);
-    private readonly Mock<ICommandDispatcher> _dispatcher = new (MockBehavior.Strict);
 
     [Fact]
     public void PlaceCommandNameIsCorrect()

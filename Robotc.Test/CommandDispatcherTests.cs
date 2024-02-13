@@ -7,6 +7,11 @@ public class CommandDispatcherTests
     private readonly Mock<ICommand> _fooCommand = new (MockBehavior.Strict);
     private readonly Mock<ICommand> _barCommand = new (MockBehavior.Strict);
 
+    private IEnumerable<ICommand> Commands { get => [_fooCommand.Object, _barCommand.Object]; }
+
+    private ICommandDispatcher CreateDispatcher(string commandList = "") 
+        => new CommandDispatcher(Commands, new StringReader(commandList), _tableTop.Object);
+
     public CommandDispatcherTests()
     {
         _fooCommand.SetupGet(mock => mock.Name)
@@ -25,7 +30,7 @@ public class CommandDispatcherTests
         _barCommand.Setup(mock => mock.Execute(_tableTop.Object, expectedParameters))
             .Returns(true);
 
-        ICommandDispatcher sut = new CommandDispatcher([_fooCommand.Object, _barCommand.Object], _tableTop.Object);
+        var sut = CreateDispatcher();
 
         Assert.True(sut.Dispatch(commandString));
 
@@ -39,12 +44,37 @@ public class CommandDispatcherTests
         var commandString = "BAZ 1,2";
         var expectedParameters = "1,2";
 
-        ICommandDispatcher sut = new CommandDispatcher([_fooCommand.Object, _barCommand.Object], _tableTop.Object);
+        var sut = CreateDispatcher();
 
         Assert.False(sut.Dispatch(commandString));
 
         _barCommand.Verify(mock => mock.Execute(_tableTop.Object, expectedParameters), Times.Never);
         _fooCommand.Verify(mock => mock.Execute(_tableTop.Object, expectedParameters), Times.Never);
+    }
+
+    [Fact]
+    public void DispatchExitsWithExitCommand()
+    {
+        var sut = CreateDispatcher("EXIT\n");
+
+        sut.DispatchLoop();
+
+        _fooCommand.VerifyGet(mock => mock.Name, Times.Never);
+        _barCommand.VerifyGet(mock => mock.Name, Times.Never);
+    }
+
+    [Fact]
+    public void DispatchFromTextReader()
+    {
+        _fooCommand.Setup(mock => mock.Execute(_tableTop.Object, ""))
+            .Returns(true);
+
+        var sut = CreateDispatcher("FOO\nEXIT\n");
+
+        sut.DispatchLoop();
+
+        _fooCommand.Verify(mock => mock.Execute(_tableTop.Object, ""), Times.Once);
+        _barCommand.Verify(mock => mock.Execute(_tableTop.Object, ""), Times.Never);
     }
 
 }

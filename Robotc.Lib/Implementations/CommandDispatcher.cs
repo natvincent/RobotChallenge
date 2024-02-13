@@ -6,13 +6,14 @@ public class CommandDispatcher : ICommandDispatcher
 {
     private readonly IEnumerable<ICommand> _commands;
     private readonly ITableTop _tableTop;
+    private readonly TextReader _reader;
     private readonly Regex _commandRegex = new (
             @"(?<command>\w*)\b\W*(?<params>.*)", 
             RegexOptions.Compiled | RegexOptions.Singleline
         );
     
-    public CommandDispatcher(IEnumerable<ICommand> commands, ITableTop tableTop) 
-        => (_commands, _tableTop) = (commands, tableTop);
+    public CommandDispatcher(IEnumerable<ICommand> commands, TextReader reader, ITableTop tableTop) 
+        => (_commands, _reader, _tableTop) = (commands, reader, tableTop);
 
     public bool Dispatch(string commandString)
     {
@@ -26,5 +27,22 @@ public class CommandDispatcher : ICommandDispatcher
             }
         }
         return false;
-    }       
+    }    
+
+    public void DispatchLoop()
+    {
+        while (true)
+        {
+            string commandString = _reader.ReadLine() ?? "";
+            if (commandString?.ToUpper() == "EXIT")
+            {
+                break;
+            }
+            else 
+            {
+                Dispatch(commandString);
+            }
+        }
+
+    }   
 }

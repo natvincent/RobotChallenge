@@ -7,7 +7,7 @@ public interface ITableTop
     Rectangle Bounds { get; set; }
     Size Size { get; set; }
 
-    IRobot? Robot { get; }
+    IRobot Robot { get; }
 
     bool HasRobot { get; }
 

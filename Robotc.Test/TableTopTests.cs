@@ -6,12 +6,15 @@ public class TableTopTests
 {
     private readonly Mock<IRobotFactory> _factory = new (MockBehavior.Strict);
     private readonly Mock<IRobot> _robot = new (MockBehavior.Strict);
+    private readonly Mock<IRobot> _nullRobot = new (MockBehavior.Strict);
     private readonly Point _validPosition = new (1, 1);
 
     public TableTopTests()
     {
         _factory.Setup(mock => mock.CreateRobot(It.IsAny<Point>(), It.IsAny<Direction>()))
             .Returns(_robot.Object);
+        _factory.Setup(mock => mock.CreateNullRobot())
+            .Returns(_nullRobot.Object);
     }
 
     [Fact]
@@ -73,5 +76,16 @@ public class TableTopTests
         sut.PlaceRobot(_validPosition, Direction.North);
 
         Assert.True(sut.HasRobot);
-    }  
+    }
+
+    [Fact]
+    public void ConstructorCallsCreateNullRobot()
+    {
+        ITableTop sut = new TableTop(_factory.Object);
+
+        Assert.Equal(_nullRobot.Object, sut.Robot);
+
+        _factory.Verify(mock => mock.CreateNullRobot(), Times.Once);
+    }
+  
 }
