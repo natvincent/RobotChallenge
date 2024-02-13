@@ -15,7 +15,11 @@ public class NullRobot : IRobot
     {
     }
 
-    public Point CalcMove(int distance = 1)
+    public void Rotate(Turn turn)
+    {
+    }
+
+   public Point CalcMove(int distance = 1)
     {
         return Point.Empty;
     }

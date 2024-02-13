@@ -13,14 +13,9 @@ public class Robot : IRobot
     public Point Position { get; set; }
     public Direction Heading { get; set; }
 
-    public void TurnLeft() 
+    public void Rotate(Turn turn)
     {
-        Heading = Heading.ToLeft();
-    }
-
-    public void TurnRight() 
-    {
-        Heading = Heading.ToRight();
+        Heading = Heading.Rotate(turn);
     }
 
     public Point CalcMove(int distance = 1)

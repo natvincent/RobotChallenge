@@ -43,4 +43,19 @@ public class DirectionTests
         var actual = start.ToRight();
         Assert.Equal(expected, actual);
     }
+
+    [Theory]
+    [InlineData(Direction.North, Turn.Left, Direction.West)]
+    [InlineData(Direction.West, Turn.Left, Direction.South)]
+    [InlineData(Direction.South, Turn.Left, Direction.East)]
+    [InlineData(Direction.East, Turn.Left, Direction.North)]
+    [InlineData(Direction.North, Turn.Right, Direction.East)]
+    [InlineData(Direction.East, Turn.Right, Direction.South)]
+    [InlineData(Direction.South, Turn.Right, Direction.West)]
+    [InlineData(Direction.West, Turn.Right, Direction.North)]
+    public void RotateExtensionMethod(Direction start, Turn turn, Direction expected)
+    {
+        var actual = start.Rotate(turn);
+        Assert.Equal(expected, actual);
+    }
 }

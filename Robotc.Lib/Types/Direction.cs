@@ -35,4 +35,13 @@ public static class DirectionHelper
         return ++direction;
     }
 
+    public static Direction Rotate(this Direction direction, Turn turn)
+    {
+        direction = NormaliseDirection(direction);
+        if (turn == Turn.Left)
+            return direction.ToLeft();
+        else
+            return direction.ToRight();
+    }
+
 }

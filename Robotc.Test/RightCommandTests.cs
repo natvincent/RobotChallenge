@@ -1,12 +1,12 @@
 namespace Robotc.Test;
 
-public class LeftCommandTests : BaseCommandTests
+public class RightCommandTests : BaseCommandTests
 {
     [Fact]
     public void NameIsCorrect()
     {
-        ICommand sut = new LeftCommand();
-        Assert.Equal("LEFT", sut.Name);
+        ICommand sut = new RightCommand();
+        Assert.Equal("RIGHT", sut.Name);
     }
 
     [Fact]
@@ -18,16 +18,16 @@ public class LeftCommandTests : BaseCommandTests
                 .InSequence()
                 .Returns(true);
 
-            _robot.Setup(mock => mock.Rotate(Turn.Left))
+            _robot.Setup(mock => mock.Rotate(Turn.Right))
                 .InSequence();
 
-            ICommand sut = new LeftCommand();
+            ICommand sut = new RightCommand();
 
             Assert.True(sut.Execute(_tableTop.Object, ""));
 
         }
 
         _tableTop.VerifyGet(mock => mock.HasRobot, Times.Once);
-        _robot.Verify(mock => mock.Rotate(Turn.Left), Times.Once);
+        _robot.Verify(mock => mock.Rotate(Turn.Right), Times.Once);
     }
 }

@@ -7,8 +7,7 @@ public interface IRobot
     Point Position { get; set; }
     Direction Heading { get; set; }
 
-    void TurnLeft();
-    void TurnRight();
+    void Rotate(Turn turn);
 
     Point CalcMove(int distance = 1);
 }
