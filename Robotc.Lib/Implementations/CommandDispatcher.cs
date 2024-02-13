@@ -34,14 +34,10 @@ public class CommandDispatcher : ICommandDispatcher
         while (true)
         {
             string commandString = _reader.ReadLine() ?? "";
-            if (commandString?.ToUpper() == "EXIT")
-            {
+            if (commandString.Equals("EXIT", StringComparison.InvariantCultureIgnoreCase))
                 break;
-            }
             else 
-            {
                 Dispatch(commandString);
-            }
         }
 
     }   

@@ -2,15 +2,14 @@ using System.Drawing;
 
 namespace Robotc.Test;
 
-public class MoveCommandTests
+public class MoveCommandTests : BaseCommandTests
 {
-    private readonly Mock<ITableTop> _tableTop = new (MockBehavior.Strict);
-    private readonly Mock<IRobot> _robot = new (MockBehavior.Strict);
 
-    public MoveCommandTests()
+    [Fact]
+    public void HasCorrectName()
     {
-        _tableTop.SetupGet(mock => mock.Robot)
-            .Returns(_robot.Object);
+        ICommand sut = new MoveCommand();
+        Assert.Equal("MOVE", sut.Name);
     }
 
     [Fact]

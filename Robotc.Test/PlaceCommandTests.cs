@@ -3,10 +3,8 @@ using Xunit.Sdk;
 
 namespace Robotc.Test;
 
-public class CommandTests 
+public class PlaceCommandTests : BaseCommandTests
 {
-    private readonly Mock<ITableTop> _tableTop = new (MockBehavior.Strict);
-
     [Fact]
     public void PlaceCommandNameIsCorrect()
     {
