@@ -27,10 +27,10 @@ public class Robot : IRobot
     {
         return Heading switch //switch statement compiles to jump table, faster than array lookup
         {
-            Direction.Left => Position + new Size(-distance, 0),
-            Direction.Up => Position + new Size(0, distance),
-            Direction.Right => Position + new Size(distance, 0),
-            Direction.Down => Position + new Size(0, -distance),
+            Direction.West => Position + new Size(-distance, 0),
+            Direction.North => Position + new Size(0, distance),
+            Direction.East => Position + new Size(distance, 0),
+            Direction.South => Position + new Size(0, -distance),
             _ => Position
         };
     }

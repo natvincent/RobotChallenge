@@ -7,17 +7,17 @@ public class RobotTests
     [Fact]
     public void HasAPositionAndHeading()
     {
-        IRobot sut = new Robot(new Point(1, 1), Direction.Up);
+        IRobot sut = new Robot(new Point(1, 1), Direction.North);
 
         Assert.Equal(new Point(1, 1), sut.Position);
-        Assert.Equal(Direction.Up, sut.Heading);
+        Assert.Equal(Direction.North, sut.Heading);
     }
 
     [Theory]
-    [InlineData(Direction.Up, Direction.Left)]
-    [InlineData(Direction.Left, Direction.Down)]
-    [InlineData(Direction.Down, Direction.Right)]
-    [InlineData(Direction.Right, Direction.Up)]
+    [InlineData(Direction.North, Direction.West)]
+    [InlineData(Direction.West, Direction.South)]
+    [InlineData(Direction.South, Direction.East)]
+    [InlineData(Direction.East, Direction.North)]
     public void CanTurnLeft(Direction startHeading, Direction expected)
     {
         IRobot sut = new Robot(new Point(1, 1), startHeading);
@@ -29,10 +29,10 @@ public class RobotTests
     }
 
     [Theory]
-    [InlineData(Direction.Up, Direction.Right)]
-    [InlineData(Direction.Right, Direction.Down)]
-    [InlineData(Direction.Down, Direction.Left)]
-    [InlineData(Direction.Left, Direction.Up)]
+    [InlineData(Direction.North, Direction.East)]
+    [InlineData(Direction.East, Direction.South)]
+    [InlineData(Direction.South, Direction.West)]
+    [InlineData(Direction.West, Direction.North)]
     public void CanTurnRight(Direction startHeading, Direction expected)
     {
         IRobot sut = new Robot(new Point(1, 1), startHeading);
@@ -46,7 +46,7 @@ public class RobotTests
     [Fact]
     public void CanCalcMoveBasedOnPositionAndHeading()
     {
-        IRobot sut = new Robot(new Point(1, 1), Direction.Up);
+        IRobot sut = new Robot(new Point(1, 1), Direction.North);
 
         var newPosition = sut.CalcMove();
 

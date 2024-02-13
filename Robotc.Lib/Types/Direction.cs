@@ -3,12 +3,12 @@ using System.Reflection.Metadata;
 
 namespace Robotc.Lib;
 
-public enum Direction { Left, Up, Right, Down };
+public enum Direction { West, North, East, South };
 
-public static class DirectionExtensions 
+public static class DirectionHelper 
 {
-    private static readonly Direction s_minDirection = Enum.GetValues(typeof(Direction)).Cast<Direction>().Min(); 
-    private static readonly Direction s_maxDirection = Enum.GetValues(typeof(Direction)).Cast<Direction>().Max(); 
+    private static readonly Direction s_minDirection = Enum.GetValues<Direction>().Cast<Direction>().Min(); 
+    private static readonly Direction s_maxDirection = Enum.GetValues<Direction>().Cast<Direction>().Max(); 
 
     private static Direction NormaliseDirection(Direction direction)
     {
@@ -34,4 +34,5 @@ public static class DirectionExtensions
             return s_minDirection;
         return ++direction;
     }
+
 }
