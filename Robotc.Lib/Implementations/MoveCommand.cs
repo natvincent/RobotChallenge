@@ -4,7 +4,7 @@ public class MoveCommand : Command
 {
     public MoveCommand() : base ("MOVE") {}
 
-    public override bool Execute(ITableTop tableTop, string parameters)
+    public override bool Execute(TextWriter writer, ITableTop tableTop, string parameters)
     {
         if (!tableTop.HasRobot) 
             return false;

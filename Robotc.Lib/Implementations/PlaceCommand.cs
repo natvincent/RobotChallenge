@@ -10,7 +10,7 @@ public class PlaceCommand : Command
         : base("PLACE")
     {}
 
-    public override bool Execute(ITableTop tableTop, string parameters)
+    public override bool Execute(TextWriter writer, ITableTop tableTop, string parameters)
     {
         var regex = new Regex(@"(?<x>\d{1,3}),(?<y>\d{1,3}),(?<heading>WEST|NORTH|EAST|SOUTH)");
         

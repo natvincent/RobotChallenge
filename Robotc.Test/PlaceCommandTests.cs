@@ -1,5 +1,4 @@
 using System.Drawing;
-using Xunit.Sdk;
 
 namespace Robotc.Test;
 
@@ -23,6 +22,7 @@ public class PlaceCommandTests : BaseCommandTests
         ICommand sut = new PlaceCommand();
 
         sut.Execute(
+            _writer, 
             _tableTop.Object, 
             "1,1,NORTH"
         );
@@ -42,6 +42,7 @@ public class PlaceCommandTests : BaseCommandTests
         ICommand sut = new PlaceCommand();
 
         Assert.False(sut.Execute(
+            _writer, 
             _tableTop.Object, 
             "3,3,NORTH"
         ));
@@ -55,6 +56,7 @@ public class PlaceCommandTests : BaseCommandTests
         ICommand sut = new PlaceCommand();
 
         Assert.False(sut.Execute(
+            _writer, 
             _tableTop.Object, 
             "3,3,SIDEWAYS"
         ));
