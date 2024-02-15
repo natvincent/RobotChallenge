@@ -33,6 +33,8 @@ Commands can be passed to the program via ```stdin``` and output can be piped fr
 Robotc < Commands.txt > Output.txt
 ```
 
+There are example command files included in the ```Robotc\TestData``` folder.
+
 ### Table Top
 ![Table Top Layout](TableTop.svg)
 
