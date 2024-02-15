@@ -8,11 +8,48 @@ Once at a shell prompt:
 ```
 git clone https://github.com/natvincent/RobotChallenge.git
 cd RobotChallenge
+dotnet build
+```
+## Running the Robot
+
+Running the robot from the command line directly (from the RobotChallenge directory):
+```
 dotnet run
 ```
-You can then start issuing commands, as per the spec.
+You will be presented with an empty command line. Valid commands are listed in the [spec](20_coding_test.md).
 
-## Assumptions and Thoughts
+The challenge is to create a program to simulate a robot on a table top. The robot can be given commands that allow it to move around on the table.
+
+* The tabletop that is divided into a grid 5 squares across (East and West) and 5 squares high (North and South).
+* The South Western corner is ```0,0```.
+* The robot can be issued commands at the command line. 
+* Commands allow the robot to be placed on the table, moved forward and rotated left or right.
+* Invalid commands are ignored.
+* All commands are ignored until the ```PLACE``` command is used to put the robot on the table.
+
+Commands can be passed to the program via ```stdin``` and output can be piped from ```stdout```. e.g.:
+
+```
+Robotc < Commands.txt > Output.txt
+```
+
+### Table Top
+![Table Top Layout](TableTop.svg)
+
+### Valid Commands
+|Command|Parameters|Description|
+|--------|----------------|------|
+|```PLACE```||Place a robot on the table. Commands (other than ```EXIT```) are ignored until this command is issued.|
+||```X```|Integer between 0 and 4.|
+||```Y```|Integer between 0 and 4.|
+||```Heading```|One of ```NORTH```, ```SOUTH```, ```EAST``` or ```WEST```. The direction the robot is to face.|
+|```MOVE```|None|Move one square forward in the direction the robot is facing. If the robot is at the boundary of the table it will not move forward.|
+|```LEFT```|None|Rotate the robot to the left 90°.|
+|```RIGHT```|None|Rotate the robot to the right 90°.|
+|```REPORT```|None|Output the robots position to ```stdout```.|
+|```EXIT```|None|Exits the program. CTRL+C and CTRL+Z can also be used to exit. When passing in commands from a file via ```stdin```, the EXIT command is not required to exit the program|
+
+## Design Assumptions and Thoughts (from before development)
 ### I/O
 - Need to handle input from StdIn, output to StdOut. 
   - This allows input from console or from a file. 
