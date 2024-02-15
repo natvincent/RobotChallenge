@@ -22,8 +22,8 @@ public class TableTopTests
     {
         ITableTop sut = new TableTop(_factory.Object);
 
-        Assert.Equal(new Size(3, 3), sut.Size);
-        Assert.Equal(new Rectangle(0, 0, 3, 3), sut.Bounds);
+        Assert.Equal(new Size(5, 5), sut.Size);
+        Assert.Equal(new Rectangle(0, 0, 5, 5), sut.Bounds);
 
     }
 
@@ -33,9 +33,9 @@ public class TableTopTests
     [InlineData(0, -1, false)] 
     [InlineData(1, 1, true)] 
     [InlineData(2, 2, true)]
-    [InlineData(3, 3, false)]
-    [InlineData(0, 3, false)]
-    [InlineData(3, 0, false)]
+    [InlineData(5, 5, false)]
+    [InlineData(0, 5, false)]
+    [InlineData(5, 0, false)]
    public void ReturnsWhetherNewPositionIsValid(int x, int y, bool expected)
     {
         ITableTop sut = new TableTop(_factory.Object);

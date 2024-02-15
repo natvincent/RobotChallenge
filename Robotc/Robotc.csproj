@@ -8,6 +8,16 @@
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <_CopyItems Include="$(MSBuildThisFileDirectory)TestData/*.*" />
+  </ItemGroup>
+
+  <Target Name="CopyTestFiles" AfterTargets="AfterBuild">
+    <Message Importance="High" Text="$(OutDir)" />
+    <Message Importance="High" Text="$(MSBuildThisFileDirectory)" />
+    <Copy SourceFiles="@(_CopyItems)" DestinationFolder="$(OutDir)" />
+  </Target>
+
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>net8.0</TargetFramework>

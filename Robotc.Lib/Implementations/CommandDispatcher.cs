@@ -35,12 +35,14 @@ public class CommandDispatcher : ICommandDispatcher
         return false;
     }    
 
-    public void DispatchLoop()
+    public async void DispatchLoop(CancellationToken? token = null)
     {
-        while (true)
+        CancellationToken realToken = token ?? new CancellationToken();
+
+        while (!realToken.IsCancellationRequested)
         {
-            string commandString = _reader.ReadLine() ?? "";
-            if (commandString.Equals("EXIT", StringComparison.InvariantCultureIgnoreCase))
+            string? commandString = await _reader.ReadLineAsync(realToken);
+            if (commandString == null || commandString.Equals("EXIT", StringComparison.InvariantCultureIgnoreCase))
                 break;
             else 
                 Dispatch(commandString);

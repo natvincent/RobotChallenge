@@ -1,3 +1,5 @@
+using System.Threading.Tasks.Sources;
+
 namespace Robotc.Test;
 
 public class CommandDispatcherTests
@@ -75,6 +77,36 @@ public class CommandDispatcherTests
 
         _fooCommand.Verify(mock => mock.Execute(_writer, _tableTop.Object, ""), Times.Once);
         _barCommand.Verify(mock => mock.Execute(It.IsAny<TextWriter>(), It.IsAny<ITableTop>(), It.IsAny<string>()), Times.Never);
+    }
+
+    [Fact]
+    public async void DispatchLoopExitsWhenReachingEndOfFile()
+    {
+
+        const int TimeoutMS = 200;
+
+        var tokenSource = new CancellationTokenSource(TimeoutMS);
+        tokenSource.Token.ThrowIfCancellationRequested();
+
+        var task = Task.Run(() =>
+            {
+
+                _fooCommand.Setup(mock => mock.Execute(_writer, _tableTop.Object, ""))
+                    .Returns(true);
+
+                var sut = CreateDispatcher("FOO\n");
+
+                sut.DispatchLoop(tokenSource.Token);
+
+                _fooCommand.Verify(mock => mock.Execute(_writer, _tableTop.Object, ""), Times.Once);
+            },
+            tokenSource.Token
+        );
+
+        await task;
+
+        Assert.False(tokenSource.IsCancellationRequested, "DispatchLoop() did not exit at end of stream");
+
     }
 
 }

@@ -4,6 +4,9 @@ namespace Robotc.Lib;
 
 public class TableTop : ITableTop
 {
+    private const int DefaultWidth = 5;
+    private const int DefaultHeight = 5;
+
     private readonly IRobotFactory _factory;
     private IRobot _robot;
 
@@ -17,7 +20,7 @@ public class TableTop : ITableTop
 
     public Rectangle Bounds { get; set; } = new Rectangle(
         new Point(0, 0), 
-        new Size(3, 3)
+        new Size(DefaultWidth, DefaultHeight)
     );
 
     public Size Size 
