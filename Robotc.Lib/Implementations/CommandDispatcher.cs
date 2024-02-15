@@ -8,10 +8,11 @@ public class CommandDispatcher : ICommandDispatcher
     private readonly ITableTop _tableTop;
     private readonly TextReader _reader;
     private readonly TextWriter _writer;
-    private readonly Regex _commandRegex = new (
-            @"(?<command>\w*)\b\W*(?<params>.*)", 
-            RegexOptions.Compiled | RegexOptions.Singleline
-        );
+    private readonly Regex _commandRegex;
+    //  = new (
+    //         @"(?<command>\w*)\b\W*(?<params>.*)", 
+    //         RegexOptions.Compiled | RegexOptions.Singleline
+    //     );
     
     public CommandDispatcher(
             IEnumerable<ICommand> commands, 
@@ -19,10 +20,18 @@ public class CommandDispatcher : ICommandDispatcher
             TextWriter writer,
             ITableTop tableTop
         ) 
-            => (_commands, _reader, _writer, _tableTop) = (commands, reader, writer, tableTop);
+    {
+        (_commands, _reader, _writer, _tableTop) = (commands, reader, writer, tableTop);
+        var commandPart = String.Join('|', commands.Select(cmd => cmd.Name).ToArray());
+        _commandRegex = new Regex($"(?<command>{commandPart})\\b\\W*(?<params>.*)");
+    }
+            
 
     public bool Dispatch(string commandString)
     {
+        if (String.IsNullOrEmpty(commandString)) 
+            return false;
+            
         var match = _commandRegex.Match(commandString);
         var commandName = match.Groups["command"].Value;
         foreach (var command in _commands) 

@@ -12,8 +12,20 @@ public class CommandDispatcherTests
 
     private IEnumerable<ICommand> Commands { get => [_fooCommand.Object, _barCommand.Object]; }
 
+    private void ClearOutInvocations() 
+    {
+        _fooCommand.Invocations.Clear();
+        _barCommand.Invocations.Clear();
+    }
+
     private ICommandDispatcher CreateDispatcher(string commandList = "") 
-        => new CommandDispatcher(Commands, new StringReader(commandList), _writer, _tableTop.Object);
+    {
+        var dispatcher = new CommandDispatcher(Commands, new StringReader(commandList), _writer, _tableTop.Object);
+
+        ClearOutInvocations();
+
+        return dispatcher;
+    }
 
     public CommandDispatcherTests()
     {
