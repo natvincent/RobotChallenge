@@ -3,13 +3,25 @@ This is a programming challenge based on [this spec](20_coding_test.md).
 ## Building
 To build in a docker container, use an image with the .Net SDK and CLI installed, like this one: [dotnet/sdk](https://hub.docker.com/_/microsoft-dotnet-sdk/).
 
+To get to a shell prompt, you can run:
+
+```
+docker run -it mcr.microsoft.com/dotnet/sdk bash
+```
+
 Once at a shell prompt:
 
 ```
+cd /home/app
 git clone https://github.com/natvincent/RobotChallenge.git
 cd RobotChallenge
 dotnet build
 ```
+To run the unit tests:
+```
+dotnet test
+```
+
 ## Running the Robot
 
 Running the robot from the command line directly (from the RobotChallenge directory):
