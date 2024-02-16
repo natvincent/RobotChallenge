@@ -17,7 +17,7 @@ git clone https://github.com/natvincent/RobotChallenge.git
 cd RobotChallenge
 dotnet build
 ```
-To run the unit tests:
+To run the unit (and integration) tests:
 ```
 dotnet test
 ```
