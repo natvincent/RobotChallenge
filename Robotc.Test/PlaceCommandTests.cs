@@ -34,7 +34,7 @@ public class PlaceCommandTests : BaseCommandTests
     [Fact]
     public void PlaceCommandFailsWhenPositionIsInvalid()
     {
-        var expectedPosition = new Point(3, 3);
+        var expectedPosition = new Point(5, 5);
 
         _tableTop.Setup(mock => mock.PlaceRobot(expectedPosition, Direction.North))
             .Returns(false);
@@ -44,10 +44,27 @@ public class PlaceCommandTests : BaseCommandTests
         Assert.False(sut.Execute(
             _writer, 
             _tableTop.Object, 
-            "3,3,NORTH"
+            "5,5,NORTH"
         ));
 
         _tableTop.Verify(mock => mock.PlaceRobot(expectedPosition, Direction.North), Times.Once);
+    }
+
+    [Fact]
+    public void PlaceCommandHandlesInvalidAndLongParameters()
+    {
+        _tableTop.Setup(mock => mock.PlaceRobot(It.IsAny<Point>(), It.IsAny<Direction>()))
+            .Returns(false);
+
+        ICommand sut = new PlaceCommand();
+
+        Assert.False(sut.Execute(
+            _writer, 
+            _tableTop.Object, 
+            "55555555555555555555555555555,55555555555555555555555,NORTHNORTHNORTHNORTHNORTHNORTHNORTHNORTHNORTHNORTHNORTHNORTHNORTH"
+        ));
+
+        _tableTop.Verify(mock => mock.PlaceRobot(It.IsAny<Point>(), It.IsAny<Direction>()), Times.Never);
     }
 
     [Fact]

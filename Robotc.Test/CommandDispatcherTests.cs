@@ -67,6 +67,19 @@ public class CommandDispatcherTests
     }
 
     [Fact]
+    public void DispatchHandlesReallyLongCommandAndArguments()
+    {
+        var commandString = "BAZBAZBAZBAZBAZBAZBAZBAZBAZBAZBAZBAZBAZBAZBAZBAZBAZBAZBAZBAZBAZBAZBAZBAZBAZBAZBAZBAZBAZBAZBAZBAZBAZBAZBAZBAZBAZBAZBAZ 111111111111111111111111111111111111,222222222222222222222222222222222222";
+
+        var sut = CreateDispatcher();
+
+        Assert.False(sut.Dispatch(commandString));
+
+        _barCommand.Verify(mock => mock.Execute(It.IsAny<TextWriter>(), It.IsAny<ITableTop>(), It.IsAny<string>()), Times.Never);
+        _fooCommand.Verify(mock => mock.Execute(It.IsAny<TextWriter>(), It.IsAny<ITableTop>(), It.IsAny<string>()), Times.Never);
+    }
+
+   [Fact]
     public void DispatchExitsWithExitCommand()
     {
         var sut = CreateDispatcher("EXIT\n");
