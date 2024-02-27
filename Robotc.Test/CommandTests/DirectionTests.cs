@@ -1,3 +1,5 @@
+using System.Drawing;
+
 namespace Robotc.Test;
 
 public class DirectionTests
@@ -58,4 +60,6 @@ public class DirectionTests
         var actual = start.Rotate(turn);
         Assert.Equal(expected, actual);
     }
+
+    
 }

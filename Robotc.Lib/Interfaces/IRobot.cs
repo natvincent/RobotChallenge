@@ -9,5 +9,9 @@ public interface IRobot
 
     void Rotate(Turn turn);
 
+    bool RotateTowards(Point neighbour, out Turn turn, out int count);
+
+    IRobot Clone();
+
     Point CalcMove(int distance = 1);
 }

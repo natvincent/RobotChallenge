@@ -29,8 +29,25 @@ public class PathCommand : Command
             if (finder.Search(tableTop.Robot.Position, new Point(x, y), out var path) 
                 && path != null)
             {
-                foreach (var step in path)
-                    writer.WriteLine($"{step.X},{step.Y}");
+                var enumerator = path.GetEnumerator();
+                if (enumerator.MoveNext())
+                {
+                    var pawn = tableTop.Robot.Clone();
+                    while (enumerator.MoveNext())
+                    {
+                        var step = enumerator.Current;
+                        if (pawn.RotateTowards(step, out var turn, out var count))
+                        {
+                            while (count > 0)
+                            {
+                                writer.WriteLine(turn.ToString().ToUpper());
+                                count--;
+                            }
+                            pawn.Position = step;
+                            writer.WriteLine(@"MOVE");
+                        }
+                    }
+                }
                 return true;
             }
         }
