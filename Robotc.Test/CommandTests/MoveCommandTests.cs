@@ -34,7 +34,7 @@ public class MoveCommandTests : BaseCommandTests
 
             ICommand sut = new MoveCommand();
 
-            Assert.True(sut.Execute(_writer, _tableTop.Object, ""));
+            Assert.True(sut.Execute(_writer, _tableTop.Object, _factory.Object, ""));
         }
         _tableTop.VerifyGet(mock => mock.HasRobot, Times.Once);
         _robot.Verify(mock => mock.CalcMove(1), Times.Once);
@@ -53,7 +53,7 @@ public class MoveCommandTests : BaseCommandTests
             
         ICommand sut = new MoveCommand();
 
-        Assert.False(sut.Execute(_writer, _tableTop.Object, ""));
+        Assert.False(sut.Execute(_writer, _tableTop.Object, _factory.Object, ""));
 
         _tableTop.VerifyGet(mock => mock.HasRobot, Times.Once);
         _robot.Verify(mock => mock.CalcMove(It.IsAny<int>()), Times.Never);
@@ -81,7 +81,7 @@ public class MoveCommandTests : BaseCommandTests
 
             ICommand sut = new MoveCommand();
 
-            Assert.False(sut.Execute(_writer, _tableTop.Object, ""));
+            Assert.False(sut.Execute(_writer, _tableTop.Object, _factory.Object, ""));
         }
         _tableTop.VerifyGet(mock => mock.HasRobot, Times.Once);
         _robot.Verify(mock => mock.CalcMove(1), Times.Once);

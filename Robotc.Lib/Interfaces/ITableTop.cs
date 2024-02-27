@@ -13,6 +13,8 @@ public interface ITableTop
 
     bool PlaceRobot(Point position, Direction heading);
 
+    bool PlaceObstacle(Point position);
+
     bool IsValidPosition(Point position);
 
 }

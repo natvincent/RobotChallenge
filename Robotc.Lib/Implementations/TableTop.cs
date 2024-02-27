@@ -8,7 +8,26 @@ public class TableTop : ITableTop
     private const int DefaultHeight = 5;
 
     private readonly IRobotFactory _factory;
+    private readonly List<Point> _obstacles = new ();
     private IRobot _robot;
+
+    private bool PointFreeOfObstacles(Point position)
+    {
+        foreach (var obstacle in _obstacles)
+        {
+            if (position == obstacle)
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private bool PointCanHaveObstacle(Point position)
+    {
+        return IsValidPosition(position)
+          && _robot.Position != position;
+    }
 
     public bool HasRobot { get; private set; }
 
@@ -41,9 +60,20 @@ public class TableTop : ITableTop
         return false;
     }
 
+    public bool PlaceObstacle(Point position)
+    {
+        if (PointCanHaveObstacle(position))
+        {
+            _obstacles.Add(position);    
+            return true;
+        }
+        return false;
+    }
+
     public bool IsValidPosition(Point position) 
     {
-        return Bounds.Contains(position);
+        return Bounds.Contains(position)
+            && PointFreeOfObstacles(position);
     }
 
 }

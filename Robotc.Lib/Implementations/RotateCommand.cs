@@ -8,7 +8,7 @@ public class RotateCommand : Command
 
     public RotateCommand(string name, Turn turn) : base(name) => _turn = turn;
 
-    public override bool Execute(TextWriter writer, ITableTop tableTop, string parameters)
+    public override bool Execute(TextWriter writer, ITableTop tableTop, IRobotFactory factory, string parameters)
     {
         if (!tableTop.HasRobot)
             return false;

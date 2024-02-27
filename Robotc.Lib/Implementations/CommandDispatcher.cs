@@ -8,6 +8,7 @@ public class CommandDispatcher : ICommandDispatcher
     private readonly ITableTop _tableTop;
     private readonly TextReader _reader;
     private readonly TextWriter _writer;
+    private readonly IRobotFactory _factory;
     private readonly Regex _commandRegex;
     //  = new (
     //         @"(?<command>\w*)\b\W*(?<params>.*)", 
@@ -18,10 +19,11 @@ public class CommandDispatcher : ICommandDispatcher
             IEnumerable<ICommand> commands, 
             TextReader reader, 
             TextWriter writer,
-            ITableTop tableTop
+            ITableTop tableTop,
+            IRobotFactory factory
         ) 
     {
-        (_commands, _reader, _writer, _tableTop) = (commands, reader, writer, tableTop);
+        (_commands, _reader, _writer, _tableTop, _factory) = (commands, reader, writer, tableTop, factory);
         var commandPart = String.Join('|', commands.Select(cmd => cmd.Name).ToArray());
         _commandRegex = new Regex($"(?<command>{commandPart})\\b\\W*(?<params>.*)");
     }
@@ -38,7 +40,7 @@ public class CommandDispatcher : ICommandDispatcher
         {
             if (command.Name == commandName)
             {
-                return command.Execute(_writer, _tableTop, match.Groups["params"].Value);
+                return command.Execute(_writer, _tableTop, _factory, match.Groups["params"].Value);
             }
         }
         return false;

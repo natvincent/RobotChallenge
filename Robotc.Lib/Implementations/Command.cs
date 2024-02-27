@@ -7,6 +7,11 @@ public abstract class Command : ICommand
 
     public string Name { get; }
 
-    public abstract bool Execute(TextWriter writer, ITableTop tableTop, string parameters);
+    public abstract bool Execute(
+        TextWriter writer, 
+        ITableTop tableTop, 
+        IRobotFactory factory,
+        string parameters
+    );
 
 }

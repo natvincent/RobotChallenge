@@ -23,7 +23,7 @@ public class RightCommandTests : BaseCommandTests
 
             ICommand sut = new RightCommand();
 
-            Assert.True(sut.Execute(_writer, _tableTop.Object, ""));
+            Assert.True(sut.Execute(_writer, _tableTop.Object, _factory.Object, ""));
 
         }
 
@@ -39,7 +39,7 @@ public class RightCommandTests : BaseCommandTests
 
         ICommand sut = new RightCommand();
 
-        Assert.False(sut.Execute(_writer, _tableTop.Object, ""));
+        Assert.False(sut.Execute(_writer, _tableTop.Object, _factory.Object, ""));
 
         _tableTop.VerifyGet(mock => mock.HasRobot, Times.Once);
         _robot.Verify(mock => mock.Rotate(It.IsAny<Turn>()), Times.Never);

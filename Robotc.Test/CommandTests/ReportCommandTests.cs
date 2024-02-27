@@ -23,7 +23,7 @@ public class ReportCommandTests : BaseCommandTests
         
         ICommand sut = new ReportCommand();
 
-        Assert.True(sut.Execute(_writer, _tableTop.Object, ""));
+        Assert.True(sut.Execute(_writer, _tableTop.Object, _factory.Object, ""));
 
         Assert.Equal("2,2,SOUTH" + _writer.NewLine, _writer.ToString());
         _robot.VerifyGet(mock => mock.Position, Times.Once);
@@ -38,7 +38,7 @@ public class ReportCommandTests : BaseCommandTests
         
         ICommand sut = new ReportCommand();
 
-        Assert.False(sut.Execute(_writer, _tableTop.Object, ""));
+        Assert.False(sut.Execute(_writer, _tableTop.Object, _factory.Object, ""));
 
         _tableTop.VerifyGet(mock => mock.Robot, Times.Never);
         _robot.VerifyGet(mock => mock.Position, Times.Never);

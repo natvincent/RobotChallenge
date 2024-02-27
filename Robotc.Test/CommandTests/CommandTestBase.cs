@@ -4,7 +4,7 @@ public class BaseCommandTests
 {
     protected readonly Mock<ITableTop> _tableTop = new (MockBehavior.Strict);
     protected readonly Mock<IRobot> _robot = new (MockBehavior.Strict);
-
+    protected readonly Mock<IRobotFactory> _factory = new Mock<IRobotFactory>(MockBehavior.Strict);
     protected readonly StringWriter _writer = new ();
 
     public BaseCommandTests()

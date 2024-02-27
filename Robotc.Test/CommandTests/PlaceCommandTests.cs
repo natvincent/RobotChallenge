@@ -23,7 +23,7 @@ public class PlaceCommandTests : BaseCommandTests
 
         sut.Execute(
             _writer, 
-            _tableTop.Object, 
+            _tableTop.Object, _factory.Object, 
             "1,1,NORTH"
         );
 
@@ -43,7 +43,7 @@ public class PlaceCommandTests : BaseCommandTests
 
         Assert.False(sut.Execute(
             _writer, 
-            _tableTop.Object, 
+            _tableTop.Object, _factory.Object, 
             "5,5,NORTH"
         ));
 
@@ -60,7 +60,7 @@ public class PlaceCommandTests : BaseCommandTests
 
         Assert.False(sut.Execute(
             _writer, 
-            _tableTop.Object, 
+            _tableTop.Object, _factory.Object, 
             "55555555555555555555555555555,55555555555555555555555,NORTHNORTHNORTHNORTHNORTHNORTHNORTHNORTHNORTHNORTHNORTHNORTHNORTH"
         ));
 
@@ -74,7 +74,7 @@ public class PlaceCommandTests : BaseCommandTests
 
         Assert.False(sut.Execute(
             _writer, 
-            _tableTop.Object, 
+            _tableTop.Object, _factory.Object, 
             "3,3,SIDEWAYS"
         ));
 

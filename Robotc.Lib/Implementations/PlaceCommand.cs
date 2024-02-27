@@ -14,7 +14,7 @@ public class PlaceCommand : Command
 
     }
 
-    public override bool Execute(TextWriter writer, ITableTop tableTop, string parameters)
+    public override bool Execute(TextWriter writer, ITableTop tableTop, IRobotFactory factory, string parameters)
     {
         var match = _regex.Match(parameters);
 

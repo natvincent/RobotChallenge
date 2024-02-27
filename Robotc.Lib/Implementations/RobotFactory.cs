@@ -13,4 +13,9 @@ public class RobotFactory : IRobotFactory
     {
         return new Robot(position, heading);
     }
+
+    public IPathFinder CreatePathFinder(ITableTop tableTop)
+    {
+        return new PathFinder(tableTop);
+    }
 }

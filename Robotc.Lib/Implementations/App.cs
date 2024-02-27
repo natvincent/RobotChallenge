@@ -30,6 +30,7 @@ public class App : IDisposable
                 services.AddScoped<ICommand, LeftCommand>();
                 services.AddScoped<ICommand, RightCommand>();
                 services.AddScoped<ICommand, ReportCommand>();
+                services.AddScoped<ICommand, BlockCommand>();
 
             })
             .Build();

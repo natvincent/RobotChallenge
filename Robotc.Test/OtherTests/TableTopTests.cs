@@ -87,5 +87,55 @@ public class TableTopTests
 
         _factory.Verify(mock => mock.CreateNullRobot(), Times.Once);
     }
+
+    [Fact]
+    public void CanCreateAnObstacle()
+    {
+        ITableTop sut = new TableTop(_factory.Object);
+
+        var position = new Point(2, 2);
+
+        Assert.True(sut.IsValidPosition(position));
+
+        _nullRobot.SetupGet(mock => mock.Position)
+            .Returns(new Point(0, 0));
+
+        Assert.True(sut.PlaceObstacle(position));
+
+        Assert.False(sut.IsValidPosition(position));
+    }
+
+    [Theory]
+    [InlineData(-1, -1)]
+    [InlineData(-1, 2)]
+    [InlineData(2, -1)]
+    [InlineData(5, 5)]
+    [InlineData(2, 5)]
+    [InlineData(5, 2)]
+    public void PlacingObstacleAtInvalidLocationFails(int x, int y)
+    {
+        ITableTop sut = new TableTop(_factory.Object);
+
+        var position = new Point(x, y);
+
+        Assert.False(sut.PlaceObstacle(position));
+    }
+
+    [Fact]
+    public void PlactingObstacleOnSamePositionAsRobotFails()
+    {
+        ITableTop sut = new TableTop(_factory.Object);
+
+        var position = new Point(1, 1);
+
+        _robot.SetupGet(mock => mock.Position)
+            .Returns(position);
+        
+        sut.PlaceRobot(position, Direction.North);
+
+        Assert.False(sut.PlaceObstacle(position));
+
+        _robot.VerifyGet(mock => mock.Position, Times.Once);
+    }
   
 }

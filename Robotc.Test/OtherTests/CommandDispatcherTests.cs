@@ -8,6 +8,7 @@ public class CommandDispatcherTests
     private readonly Mock<ITableTop> _tableTop = new (MockBehavior.Strict);
     private readonly Mock<ICommand> _fooCommand = new (MockBehavior.Strict);
     private readonly Mock<ICommand> _barCommand = new (MockBehavior.Strict);
+    private readonly Mock<IRobotFactory> _factory = new Mock<IRobotFactory>(MockBehavior.Strict);
     private readonly StringWriter _writer = new ();
 
     private IEnumerable<ICommand> Commands { get => [_fooCommand.Object, _barCommand.Object]; }
@@ -20,7 +21,7 @@ public class CommandDispatcherTests
 
     private ICommandDispatcher CreateDispatcher(string commandList = "") 
     {
-        var dispatcher = new CommandDispatcher(Commands, new StringReader(commandList), _writer, _tableTop.Object);
+        var dispatcher = new CommandDispatcher(Commands, new StringReader(commandList), _writer, _tableTop.Object, _factory.Object);
 
         ClearOutInvocations();
 
@@ -42,15 +43,15 @@ public class CommandDispatcherTests
         var commandString = "BAR 1,2";
         var expectedParameters = "1,2";
 
-        _barCommand.Setup(mock => mock.Execute(_writer, _tableTop.Object, expectedParameters))
+        _barCommand.Setup(mock => mock.Execute(_writer, _tableTop.Object, _factory.Object, expectedParameters))
             .Returns(true);
 
         var sut = CreateDispatcher();
 
         Assert.True(sut.Dispatch(commandString));
 
-        _barCommand.Verify(mock => mock.Execute(_writer, _tableTop.Object, expectedParameters), Times.Once);
-        _fooCommand.Verify(mock => mock.Execute(It.IsAny<TextWriter>(), It.IsAny<ITableTop>(), It.IsAny<string>()), Times.Never);
+        _barCommand.Verify(mock => mock.Execute(_writer, _tableTop.Object, _factory.Object, expectedParameters), Times.Once);
+        _fooCommand.Verify(mock => mock.Execute(It.IsAny<TextWriter>(), It.IsAny<ITableTop>(), It.IsAny<IRobotFactory>(), It.IsAny<string>()), Times.Never);
     }
 
     [Fact]
@@ -62,8 +63,8 @@ public class CommandDispatcherTests
 
         Assert.False(sut.Dispatch(commandString));
 
-        _barCommand.Verify(mock => mock.Execute(It.IsAny<TextWriter>(), It.IsAny<ITableTop>(), It.IsAny<string>()), Times.Never);
-        _fooCommand.Verify(mock => mock.Execute(It.IsAny<TextWriter>(), It.IsAny<ITableTop>(), It.IsAny<string>()), Times.Never);
+        _barCommand.Verify(mock => mock.Execute(It.IsAny<TextWriter>(), It.IsAny<ITableTop>(), It.IsAny<IRobotFactory>(), It.IsAny<string>()), Times.Never);
+        _fooCommand.Verify(mock => mock.Execute(It.IsAny<TextWriter>(), It.IsAny<ITableTop>(), It.IsAny<IRobotFactory>(), It.IsAny<string>()), Times.Never);
     }
 
     [Fact]
@@ -75,8 +76,8 @@ public class CommandDispatcherTests
 
         Assert.False(sut.Dispatch(commandString));
 
-        _barCommand.Verify(mock => mock.Execute(It.IsAny<TextWriter>(), It.IsAny<ITableTop>(), It.IsAny<string>()), Times.Never);
-        _fooCommand.Verify(mock => mock.Execute(It.IsAny<TextWriter>(), It.IsAny<ITableTop>(), It.IsAny<string>()), Times.Never);
+        _barCommand.Verify(mock => mock.Execute(It.IsAny<TextWriter>(), It.IsAny<ITableTop>(), It.IsAny<IRobotFactory>(), It.IsAny<string>()), Times.Never);
+        _fooCommand.Verify(mock => mock.Execute(It.IsAny<TextWriter>(), It.IsAny<ITableTop>(), It.IsAny<IRobotFactory>(), It.IsAny<string>()), Times.Never);
     }
 
    [Fact]
@@ -93,15 +94,15 @@ public class CommandDispatcherTests
     [Fact]
     public void DispatchFromTextReader()
     {
-        _fooCommand.Setup(mock => mock.Execute(_writer, _tableTop.Object, ""))
+        _fooCommand.Setup(mock => mock.Execute(_writer, _tableTop.Object, _factory.Object, ""))
             .Returns(true);
 
         var sut = CreateDispatcher("FOO\nEXIT\n");
 
         sut.DispatchLoop();
 
-        _fooCommand.Verify(mock => mock.Execute(_writer, _tableTop.Object, ""), Times.Once);
-        _barCommand.Verify(mock => mock.Execute(It.IsAny<TextWriter>(), It.IsAny<ITableTop>(), It.IsAny<string>()), Times.Never);
+        _fooCommand.Verify(mock => mock.Execute(_writer, _tableTop.Object, _factory.Object,  ""), Times.Once);
+        _barCommand.Verify(mock => mock.Execute(It.IsAny<TextWriter>(), It.IsAny<ITableTop>(), It.IsAny<IRobotFactory>(), It.IsAny<string>()), Times.Never);
     }
 
     [Fact]
@@ -116,14 +117,14 @@ public class CommandDispatcherTests
         var task = Task.Run(() =>
             {
 
-                _fooCommand.Setup(mock => mock.Execute(_writer, _tableTop.Object, ""))
+                _fooCommand.Setup(mock => mock.Execute(_writer, _tableTop.Object, _factory.Object, ""))
                     .Returns(true);
 
                 var sut = CreateDispatcher("FOO\n");
 
                 sut.DispatchLoop(tokenSource.Token);
 
-                _fooCommand.Verify(mock => mock.Execute(_writer, _tableTop.Object, ""), Times.Once);
+                _fooCommand.Verify(mock => mock.Execute(_writer, _tableTop.Object, _factory.Object, ""), Times.Once);
             },
             tokenSource.Token
         );
