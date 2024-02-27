@@ -31,7 +31,7 @@ public class App : IDisposable
                 services.AddScoped<ICommand, RightCommand>();
                 services.AddScoped<ICommand, ReportCommand>();
                 services.AddScoped<ICommand, BlockCommand>();
-
+                services.AddScoped<ICommand, PathCommand>();
             })
             .Build();
         _scope = _host.Services.CreateScope();
