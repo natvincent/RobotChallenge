@@ -6,16 +6,30 @@ public class Robot : IRobot
 {
     private static Size[] neighbourOffsets = 
     [
-        new (-1, 0),
-        new (0, 1),
-        new (1, 0),
-        new (0, -1)
+        new (-1, 0),  // WEST
+        new (0, 1),   // NORTH
+        new (1, 0),   // EAST
+        new (0, -1)   // SOUTH
     ];
 
     public Robot(Point position, Direction heading) 
     {
         Position = position;
         Heading = heading;
+    }
+
+    private bool TryGetHeadingFromNeighbour(Point neighbour, out Direction heading)
+    {
+        heading = Heading;
+        for (var index = 0; index < neighbourOffsets.Length; index++)
+        {
+            if (Position + neighbourOffsets[index] == neighbour)
+            {
+                heading = (Direction) index;
+                return true;
+            }
+        }
+        return false;
     }
 
     private Point NeighbourInDirection(Direction direction)
@@ -35,25 +49,25 @@ public class Robot : IRobot
     {
         count = 0;
         turn = Turn.Right;
-        if (Math.Abs(Position.X - neighbour.X) 
-            + Math.Abs(Position.Y - neighbour.Y) != 1)
+        if (!TryGetHeadingFromNeighbour(neighbour, out var newHeading))
             return false;
 
-        if (CalcMove() == neighbour)
-            return true;
-
-        var newHeading = Heading;
-        newHeading--;
-        if (NeighbourInDirection(newHeading) == neighbour)
-            turn = Turn.Left;
-
-        Rotate(turn);
-        count++;
-        if (CalcMove() != neighbour)
+        count = newHeading - Heading;
+        
+        if (count < 0)
         {
-            Rotate(turn);
-            count++;
+            turn = Turn.Left;
+            count = Math.Abs(count);
         }
+        
+        if (count > 2)
+        {
+            turn = turn.Opposite();
+            count = 1;
+        }
+
+        Heading = newHeading;
+
         return CalcMove() == neighbour;
     }
 

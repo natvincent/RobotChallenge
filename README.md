@@ -61,6 +61,13 @@ There are example command files included in the ```Robotc\TestData``` folder.
 |```LEFT```|None|Rotate the robot to the left 90°.|
 |```RIGHT```|None|Rotate the robot to the right 90°.|
 |```REPORT```|None|Output the robots position to ```stdout```.|
+|```BLOCK```||Place an obstacle at a location on the table top.|
+||```X```|Integer between 0 and 4.|
+||```Y```|Integer between 0 and 4.|
+|```PATH```||Report the path or moves required to get to a location on the table. Obstacles are taken into account|
+||```X```|Integer between 0 and 4.|
+||```Y```|Integer between 0 and 4.|
+||```Output Type```|(Optional) One of ```MOVES``` or ```POINTS```.<br>```MOVES```: Report the rotations and moves (default).<br>```POINTS```: Report the coordinates of each move.|
 |```EXIT```|None|Exits the program. CTRL+C and CTRL+Z can also be used to exit. When passing in commands from a file via ```stdin```, the EXIT command is not required to exit the program|
 
 ## Design Assumptions and Thoughts (from before development)
